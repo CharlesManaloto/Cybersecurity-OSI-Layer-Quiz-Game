@@ -1,0 +1,188 @@
+import random
+
+logo = r"""
+   _______     ______  ________ _____   _____ ______  _____ ______ _    _ _____  _____ _________     __
+  / ____\ \   / /  _ \|  ____|  __ \ / ____|  ____|/ ____|  ____| |  | |  __ \|_   _|__   __\ \   / /
+ | |     \ \_/ /| |_) | |__  | |__) | (___ | |__  | |    | |__  | |  | | |__) | | |    | |   \ \_/ /
+ | |      \   / |  _ <|  __| |  _  / \___ \|  __| | |    |  __| | |  | |  _  /  | |    | |    \   /
+ | |____   | |  | |_) | |____| | \ \ ____) | |____| |____| |____| |__| | | \ \ _| |_   | |     | |
+  \_____|  |_|  |____/|______|_|  \_\_____/|______|\_____|______|\____/|_|  \_\_____|  |_|     |_|
+
+                              OSI LAYER QUIZ GAME
+"""
+
+stages = [
+    """
+      +---+
+      |   |
+      O   |
+     /|\\  |
+     / \\  |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+     /|\\  |
+     /    |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+     /|\\  |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+     /|   |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+      |   |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+      O   |
+          |
+          |
+          |
+    =========
+    """,
+    """
+      +---+
+      |   |
+          |
+          |
+          |
+          |
+    =========
+    """
+]
+
+# OSI / Cybersecurity-related words
+word_list = [
+    "physical",
+    "datalink",
+    "network",
+    "transport",
+    "session",
+    "presentation",
+    "application",
+    "firewall",
+    "encryption",
+    "packet",
+    "router",
+    "switch",
+    "tcp",
+    "udp",
+    "ip",
+    "ssl",
+    "tls",
+    "dns",
+    "http",
+    "https",
+    "phishing",
+    "malware"
+]
+
+hints = {
+    "physical": "OSI Layer 1: Deals with cables, signals, and hardware transmission.",
+    "datalink": "OSI Layer 2: Handles MAC addresses, switches, and frames.",
+    "network": "OSI Layer 3: Handles IP addressing and routing.",
+    "transport": "OSI Layer 4: Handles TCP, UDP, ports, and end-to-end delivery.",
+    "session": "OSI Layer 5: Manages sessions between applications.",
+    "presentation": "OSI Layer 6: Handles encryption, compression, and data formatting.",
+    "application": "OSI Layer 7: Closest to the user; includes HTTP, DNS, FTP, SMTP.",
+    "firewall": "A security device that filters traffic based on rules.",
+    "encryption": "Protects data by making it unreadable without a key.",
+    "packet": "A unit of data transmitted across a network.",
+    "router": "A device that forwards packets between networks.",
+    "switch": "A Layer 2 device that forwards frames using MAC addresses.",
+    "tcp": "Reliable transport protocol used for connection-oriented communication.",
+    "udp": "Fast transport protocol used when speed is preferred over reliability.",
+    "ip": "Network layer protocol used for addressing devices.",
+    "ssl": "Older security protocol for encrypted communication.",
+    "tls": "Modern encryption protocol used by HTTPS.",
+    "dns": "Translates domain names into IP addresses.",
+    "http": "Web protocol that sends data without encryption.",
+    "https": "Secure version of HTTP using encryption.",
+    "phishing": "A social engineering attack that tricks users into giving sensitive info.",
+    "malware": "Malicious software designed to harm or exploit systems."
+}
+
+lives = 6
+correct_letters = []
+wrong_letters = []
+
+print(logo)
+
+chosen_word = random.choice(word_list)
+placeholder = "_" * len(chosen_word)
+
+print("Topic: Cybersecurity and OSI Model")
+print(f"Hint: {hints[chosen_word]}")
+print("Word to guess:", placeholder)
+
+game_over = False
+
+while not game_over:
+    print(f"\n*************** {lives}/6 LIVES LEFT ***************")
+    guess = input("Guess a letter: ").lower()
+
+    if len(guess) != 1 or not guess.isalpha():
+        print("Please enter only one letter.")
+        continue
+
+    if guess in correct_letters or guess in wrong_letters:
+        print(f"You already guessed '{guess}'. Try another letter.")
+        continue
+
+    display = ""
+
+    if guess in chosen_word:
+        correct_letters.append(guess)
+        print(f"Good guess! '{guess}' is in the word.")
+    else:
+        wrong_letters.append(guess)
+        lives -= 1
+        print(f"You guessed '{guess}', but it's not in the word. You lose a life.")
+
+    for letter in chosen_word:
+        if letter in correct_letters:
+            display += letter
+        else:
+            display += "_"
+
+    print("Word to guess:", display)
+    print("Wrong guesses:", ", ".join(wrong_letters))
+    print(stages[lives])
+
+    if "_" not in display:
+        game_over = True
+        print("\n*************** YOU WIN ***************")
+        print(f"The word was: {chosen_word}")
+        print(f"Meaning: {hints[chosen_word]}")
+
+    if lives == 0:
+        game_over = True
+        print("\n*************** YOU LOSE ***************")
+        print(f"The correct word was: {chosen_word}")
+        print(f"Meaning: {hints[chosen_word]}")
